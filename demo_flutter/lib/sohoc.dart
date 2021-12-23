@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
 // String bin = '';
 // String dec = '';
 // String oct = '';
@@ -108,7 +108,7 @@ class Sohoc extends State<SohocPage> {
                   color: Colors.pinkAccent,
                   fontWeight: FontWeight.bold
                 ),),
-                input(txtbin,2),
+                input(txtbin,2,formatterBin),
               ],),
               Row(
                 mainAxisAlignment:MainAxisAlignment.center,
@@ -118,7 +118,7 @@ class Sohoc extends State<SohocPage> {
                       color: Colors.deepPurpleAccent,
                       fontWeight: FontWeight.bold
                   ),),
-                  input(txtoct,8),
+                  input(txtoct,8,formatterOct),
                 ],),
               Row(
                 mainAxisAlignment:MainAxisAlignment.center,
@@ -128,7 +128,7 @@ class Sohoc extends State<SohocPage> {
                       color: Colors.amberAccent,
                       fontWeight: FontWeight.bold
                   ),),
-                  input(txtdec,10),
+                  input(txtdec,10,formatterDec),
                 ],),
               Row(
                 mainAxisAlignment:MainAxisAlignment.center,
@@ -138,15 +138,20 @@ class Sohoc extends State<SohocPage> {
                       color: Colors.green,
                       fontWeight: FontWeight.bold
                   ),),
-                  input(txthex,16),
+                  input(txthex,16,formatterHex),
                 ],),
 
             ],
           ),
         ));
   }
+static final TextInputFormatter formatterBin=FilteringTextInputFormatter.allow(RegExp(r'[0-1]'));
+  static final TextInputFormatter formatterOct=FilteringTextInputFormatter.allow(RegExp(r'[0-7]'));
+  static final TextInputFormatter formatterHex=FilteringTextInputFormatter.allow(RegExp(r'[a-fA-F0-9]'));
+  static final TextInputFormatter formatterDec=FilteringTextInputFormatter.allow(RegExp(r'[0-9]'));
 
-  Widget input(TextEditingController ctrl,int r) {
+  Widget input(TextEditingController ctrl,int r,TextInputFormatter formatter) {
+
     return Container(
       width: 300.0,
       height: 40.0,
@@ -155,9 +160,11 @@ class Sohoc extends State<SohocPage> {
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey, width: 1),
           borderRadius: BorderRadius.circular(5)),
-      child: TextField(
+      child: TextFormField(
         controller: ctrl,
-        keyboardType: TextInputType.number,
+       // keyboardType: TextInputType.number,
+        //inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter(RegExp("[A-Z]"))],
+        inputFormatters: [formatter],
         maxLines: 1,
         onChanged: (text){
           if(text==''){
